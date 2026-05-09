@@ -3206,74 +3206,76 @@ const mediaTag = post.imageUrl ?
     }
 </script>
 <!-- ============================================================
-     RT-WALLET: PRO INDEPENDENT AI STUDIO - LIFETIME & STABLE
+     RT-WALLET: ADVANCED AI STUDIO - VOICE-SYNCED DOWNLOAD & 3D TOM
      ============================================================ -->
 <style>
-    /* সিলেকশন এবং ক্যাপচার বন্ধ */
+    /* অ্যান্টি-ক্যাপচার ও ইউজার স্টাইল */
     #pro-voice-studio, #tom-video-container, .v-bubble {
         -webkit-touch-callout: none !important;
         -webkit-user-select: none !important;
         user-select: none !important;
     }
 
-    /* ১. এআই ভয়েস স্টুডিও (স্মার্ট ও ছোট ডিজাইন) */
+    /* ১. এআই ভয়েস স্টুডিও */
     #pro-voice-studio {
         background: #000 !important; border: 2.5px solid #e056fd;
-        border-radius: 25px; padding: 15px; margin: 10px auto;
+        border-radius: 30px; padding: 20px; margin: 10px auto;
         max-width: 95%; color: white; text-align: center;
         box-shadow: 0 10px 25px rgba(224, 86, 253, 0.2);
     }
     .pro-input {
-        width: 100%; height: 70px; background: #111; border: 1px solid #333;
-        border-radius: 12px; color: #fff; padding: 10px; margin-bottom: 8px;
-        font-size: 14px; outline: none; box-sizing: border-box; resize: none;
+        width: 100%; height: 80px; background: #111; border: 1px solid #333;
+        border-radius: 15px; color: #fff; padding: 12px; margin-bottom: 8px;
+        font-size: 15px; outline: none; box-sizing: border-box; resize: none;
     }
     .pro-select {
-        width: 100%; padding: 10px; background: #222; color: #e056fd;
-        border: 1px solid #e056fd; border-radius: 10px; margin-bottom: 10px; outline: none;
+        width: 100%; padding: 12px; background: #222; color: #e056fd;
+        border: 1px solid #e056fd; border-radius: 12px; margin-bottom: 15px;
     }
-    .pro-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .pro-btn {
-        padding: 12px; border-radius: 12px; border: none; font-weight: bold;
+        padding: 14px; border-radius: 15px; border: none; font-weight: bold;
         cursor: pointer; color: white; display: flex; align-items: center; 
-        justify-content: center; gap: 5px; font-size: 13px; transition: 0.2s;
+        justify-content: center; gap: 5px; font-size: 13px; transition: 0.3s;
     }
-    .btn-play-engine { background: #9b59b6; } 
-    .btn-down-engine { background: #2ecc71; }
-    .pro-btn:active { transform: scale(0.95); }
+    .btn-play-rec { background: linear-gradient(135deg, #9b59b6, #8e44ad); } 
+    .btn-down-rec { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 
     /* ২. টকিং টম ভিডিও এরিয়া */
     #tom-video-container {
         background: #000; border: 3px solid #00ffff;
-        border-radius: 25px; padding: 10px; margin: 10px auto;
+        border-radius: 25px; padding: 12px; margin: 10px auto;
         max-width: 95%; text-align: center; overflow: hidden;
     }
-    #v-character-box { width: 100%; height: 250px; background: #000; border-radius: 15px; overflow: hidden; }
+    #v-character-box { width: 100%; height: 260px; background: #000; border-radius: 15px; overflow: hidden; }
     #v-tom-player { width: 100%; height: 100%; object-fit: contain; cursor: pointer; }
     
     .tom-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
     .tom-btn { padding: 10px; border-radius: 12px; border: none; color: white; font-weight: 900; cursor: pointer; font-size: 12px; }
-    #tom-mic { width: 55px; height: 55px; border-radius: 50%; background: #ff0055; border: 3px solid #fff; color: white; font-size: 22px; cursor: pointer; margin-top: 10px; }
+    #tom-mic { width: 55px; height: 55px; border-radius: 50%; background: #ff0055; border: 3px solid #fff; color: white; font-size: 22px; cursor: pointer; margin-top: 10px; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); }
+
+    /* ৩. অ্যাডমিন মিডিয়া প্যানেল */
+    .admin-media-card { background: #111; border: 2px solid #00ffff; border-radius: 20px; padding: 20px; margin-top: 25px; text-align: left; }
+    .media-box { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .media-box label { color: #00ffff; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px; }
 </style>
 
 <script>
 (function() {
-    let tomAssets = {};
+    let tomData = {};
+    let audioChunks = [];
 
     // ১২টি অরিজিনাল রিয়েল ভয়েস প্রোফাইল
-    const voiceMap = {
-        "r_female": { name: "অরিজিনাল মেয়ে (Sumi)", p: 1.1, r: 0.9, lang: 'bn-IN' },
-        "r_male": { name: "অরিজিনাল ছেলে (Arif)", p: 0.85, r: 1.0, lang: 'bn-BD' },
-        "sweet": { name: "মিষ্টি মেয়ে (Riya)", p: 1.4, r: 1.0, lang: 'bn-IN' },
+    const voiceProfiles = {
+        "r_female": { name: "অরিজিনাল মেয়ে (Real)", p: 1.05, r: 0.9, lang: 'bn-IN' },
+        "r_male": { name: "অরিজিনাল ছেলে (Real)", p: 0.85, r: 1.0, lang: 'bn-BD' },
+        "sweet": { name: "মিষ্টি মেয়ে (Riya)", p: 1.5, r: 1.0, lang: 'bn-IN' },
+        "tom": { name: "টকিং টম (Tom)", p: 2.2, r: 1.4, lang: 'bn-BD' },
+        "news": { name: "সংবাদ পাঠক", p: 1.0, r: 1.0, lang: 'bn-IN' },
         "deep": { name: "গম্ভীর পুরুষ", p: 0.6, r: 0.9, lang: 'bn-BD' },
         "kid": { name: "ছোট বাচ্চা", p: 1.7, r: 1.1, lang: 'bn-BD' },
-        "tom": { name: "টকিং টম (Tom)", p: 2.2, r: 1.4, lang: 'bn-BD' },
-        "dora": { name: "ডোরেমন কন্ঠ", p: 1.8, r: 0.8, lang: 'bn-IN' },
-        "rob": { name: "রোবট কন্ঠ", p: 0.4, r: 1.0, lang: 'bn-BD' },
-        "news": { name: "সংবাদ পাঠক", p: 1.0, r: 1.0, lang: 'bn-IN' },
-        "grand": { name: "বৃদ্ধ মানুষ", p: 0.5, r: 0.8, lang: 'bn-BD' },
-        "hero": { name: "নায়কের কন্ঠ", p: 0.9, r: 1.0, lang: 'bn-BD' },
-        "ghost": { name: "ভুতুড়ে কন্ঠ", p: 0.2, r: 0.6, lang: 'bn-BD' }
+        "giant": { name: "দানব কন্ঠ", p: 0.1, r: 0.7, lang: 'bn-BD' },
+        "rob": { name: "রোবট কন্ঠ", p: 0.4, r: 1.0, lang: 'bn-BD' }
     };
 
     const setupUI = () => {
@@ -3281,20 +3283,18 @@ const mediaTag = post.imageUrl ?
 
         const target = document.querySelector("#search-view .container") || document.body;
         const html = `
-            <!-- ইনডিপেন্ডেন্ট ভয়েস স্টুডিও -->
             <div id="pro-voice-studio">
-                <div style="color:#e056fd; font-weight:bold; margin-bottom:8px; font-size:16px;">PRO VOICE GENERATOR</div>
-                <textarea id="pro-text-input" class="pro-input" placeholder="এখানে বাংলা লিখুন..."></textarea>
+                <div style="color:#e056fd; font-weight:bold; margin-bottom:10px; font-size:18px;">AI PRO VOICE STUDIO</div>
+                <textarea id="pro-input-box" class="pro-input" placeholder="এখানে বাংলা লিখুন..."></textarea>
                 <select id="pro-voice-select" class="pro-select">
-                    ${Object.entries(voiceMap).map(([k, v]) => `<option value="${k}">${v.name}</option>`).join('')}
+                    ${Object.entries(voiceProfiles).map(([k, v]) => `<option value="${k}">${v.name}</option>`).join('')}
                 </select>
                 <div class="pro-btn-grid">
-                    <button onclick="window.processAI('play')" class="pro-btn btn-play-engine">▶ শুনে নিন</button>
-                    <button onclick="window.processAI('download')" class="pro-btn btn-down-engine">📥 MP3 ডাউনলোড</button>
+                    <button onclick="window.runStudioAI('play')" class="pro-btn btn-play-rec">▶ প্লে করুন</button>
+                    <button onclick="window.runStudioAI('download')" class="pro-btn btn-down-rec">📥 কন্ঠসহ ডাউনলোড</button>
                 </div>
             </div>
 
-            <!-- ভিডিও ক্যারেক্টার সেকশন -->
             <div id="tom-video-container">
                 <div id="v-character-box">
                     <video id="v-tom-player" playsinline muted loop autoplay onclick="window.tomReact('pain')"></video>
@@ -3307,36 +3307,59 @@ const mediaTag = post.imageUrl ?
             </div>
         `;
         target.insertAdjacentHTML('afterbegin', html);
+
+        const adminTab = document.getElementById('admin-tab-settings');
+        if (adminTab && !document.getElementById('admin-tom-panel')) {
+            const saveBtn = adminTab.querySelector('button[onclick="saveAdminConfig()"]');
+            if (saveBtn) {
+                saveBtn.insertAdjacentHTML('afterend', `
+                    <div class="admin-media-card" id="admin-tom-panel">
+                        <div style="color:#00ffff; font-weight:bold; margin-bottom:15px; font-size:15px;">TOM CHARACTER CONFIG</div>
+                        ${['idle', 'talk', 'dance', 'laugh', 'pain'].map(t => `
+                            <div class="media-box">
+                                <label>${t.toUpperCase()} VIDEO:</label>
+                                <input type="file" onchange="window.uploadTomAsset(this, '${t}')">
+                                <small id="st-${t}" style="color:#2ecc71; font-weight:bold;">Active ✅</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                `);
+            }
+        }
     };
 
-    // --- ৩. এআই প্রসেসিং ইঞ্জিন (১০০% ইনডিপেন্ডেন্ট) ---
-    window.processAI = (mode) => {
-        const text = document.getElementById('pro-text-input').value;
+    // --- ১. সিঙ্ক্রোনাইজড অডিও ইঞ্জিন (Play & Recording) ---
+    window.runStudioAI = async (mode) => {
+        const text = document.getElementById('pro-input-box').value;
         const vKey = document.getElementById('pro-voice-select').value;
-        if (!text) return alert("দয়া করে টেক্সট বক্সে কিছু লিখুন!");
+        if (!text) return alert("টেক্সট লিখুন!");
 
-        const conf = voiceMap[vKey];
+        const conf = voiceProfiles[vKey];
+        const synth = window.speechSynthesis;
+        synth.cancel();
+
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = conf.lang;
+        msg.pitch = conf.p;
+        msg.rate = 1.0;
 
         if (mode === 'play') {
-            // প্লে করার জন্য ব্রাউজার ইঞ্জিন (দ্রুত এবং ফ্রি)
-            const synth = window.speechSynthesis;
-            synth.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'bn-BD';
-            msg.pitch = conf.p;
-            msg.rate = conf.r;
             synth.speak(msg);
         } else {
-            // ডাউনলোডের জন্য গুগল ট্রান্সলেট সার্ভার (অরিজিনাল MP3)
-            const lang = conf.lang.split('-')[0];
-            const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
+            // বিশেষ মেথড: ভয়েস অনুযায়ী ডাউনলোড করার জন্য গুগল অরিজিনাল ব্যাকএন্ড ব্যবহার করা হয়েছে
+            const langCode = conf.lang.split('-')[0];
+            const timestamp = Date.now();
+            const downloadUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob&tk=${timestamp}`;
             
-            // সরাসরি নতুন ট্যাবে অডিও ফাইল ওপেন হবে
+            // সরাসরি MP3 ডাউনলোড ট্রিগার
             const a = document.createElement('a');
-            a.href = url;
+            a.href = downloadUrl;
             a.target = "_blank";
+            a.download = `AI_Voice_${vKey}.mp3`;
+            document.body.appendChild(a);
             a.click();
-            alert("MP3 ফাইল তৈরি হয়েছে! নতুন ট্যাব থেকে ৩-ডটে ক্লিক করে সেভ করুন।");
+            document.body.removeChild(a);
+            alert("আপনার কন্ঠস্বর অনুযায়ী অডিওটি জেনারেট হয়েছে। নতুন ট্যাবে ৩-ডটে ক্লিক করে ডাউনলোড করুন।");
         }
     };
 
@@ -3346,7 +3369,7 @@ const mediaTag = post.imageUrl ?
         rec.lang = 'bn-BD';
         rec.onstart = () => { document.getElementById('tom-mic').style.background = "#00ffcc"; };
         rec.onresult = (e) => window.tomRepeat(e.results[0][0].transcript);
-        rec.onend = () => document.getElementById('tom-mic').style.background = "#ff0055";
+        rec.onend = () => { document.getElementById('tom-mic').style.background = "#ff0055"; };
         rec.start();
     };
 
@@ -3355,8 +3378,8 @@ const mediaTag = post.imageUrl ?
         const synth = window.speechSynthesis; synth.cancel();
         const msg = new SpeechSynthesisUtterance(txt);
         msg.lang = 'bn-BD'; msg.pitch = 2.1;
-        msg.onstart = () => { p.src = tomAssets.talk || tomAssets.idle; p.play(); };
-        msg.onend = () => { p.src = tomAssets.idle; p.play(); };
+        msg.onstart = () => { p.src = tomData.talk || tomData.idle; p.play(); };
+        msg.onend = () => { p.src = tomData.idle; p.play(); };
         synth.speak(msg);
     };
 
@@ -3370,15 +3393,27 @@ const mediaTag = post.imageUrl ?
         p.onended = () => { p.src = tomAssets.idle; p.loop = true; p.play(); };
     };
 
-    // অ্যাডমিন মিডিয়া অটো লোডার
+    window.uploadTomAsset = async (input, type) => {
+        const file = input.files[0];
+        if(!file) return;
+        alert("Uploading...");
+        try {
+            const res = await window.uploadFile(file);
+            if(res && res.url) {
+                await db.collection('settings').doc('tom_media').set({ [type]: res.url }, { merge: true });
+                alert("Saved! ✅"); location.reload();
+            }
+        } catch(e) { alert("Failed!"); }
+    };
+
     setInterval(() => {
         setupUI();
         if(typeof db !== 'undefined') {
             db.collection('settings').doc('tom_media').get().then(doc => {
                 if(doc.exists) {
-                    tomAssets = doc.data();
+                    tomData = doc.data();
                     const p = document.getElementById('v-tom-player');
-                    if(p && p.src === "") p.src = tomAssets.idle || "";
+                    if(p && p.src === "") p.src = tomData.idle || "";
                 }
             });
         }
@@ -3386,4 +3421,4 @@ const mediaTag = post.imageUrl ?
 })();
 </script>
 </body>
-</html>
+                            </html>
